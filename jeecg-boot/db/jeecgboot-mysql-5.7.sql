@@ -1,5 +1,5 @@
-CREATE database if NOT EXISTS `jeecg-boot` default character set utf8mb4 collate utf8mb4_unicode_ci;
-USE `jeecg-boot`;
+CREATE database if NOT EXISTS `jeecg_boot2` default character set utf8mb4 collate utf8mb4_unicode_ci;
+USE `jeecg_boot2`;
 
 /*
  Navicat Premium Data Transfer
@@ -8,7 +8,7 @@ USE `jeecg-boot`;
  Source Server Type    : MySQL
  Source Server Version : 50738
  Source Host           : 127.0.0.1:3306
- Source Schema         : jeecg-boot
+ Source Schema         : jeecg_boot2
 
  Target Server Type    : MySQL
  Target Server Version : 50738
