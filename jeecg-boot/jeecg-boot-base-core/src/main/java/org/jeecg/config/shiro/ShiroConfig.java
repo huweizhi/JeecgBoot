@@ -145,7 +145,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/**/*.js.map", "anon");
         filterChainDefinitionMap.put("/**/*.css.map", "anon");
         
-        //拖拽仪表盘设计器排除
+        //积木BI大屏和仪表盘排除
         filterChainDefinitionMap.put("/drag/view", "anon");
         filterChainDefinitionMap.put("/drag/page/queryById", "anon");
         filterChainDefinitionMap.put("/drag/page/addVisitsNumber", "anon");
@@ -179,6 +179,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/error", "anon");
         // 企业微信证书排除
         filterChainDefinitionMap.put("/WW_verify*", "anon");
+
+        filterChainDefinitionMap.put("/openapi/call/**", "anon");
 
         // 添加自己的过滤器并且取名为jwt
         Map<String, Filter> filterMap = new HashMap<String, Filter>(1);
