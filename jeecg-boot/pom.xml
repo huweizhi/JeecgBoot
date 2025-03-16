@@ -491,16 +491,29 @@
 		</resources>
 	</build>
 
+<!--	<distributionManagement>-->
+<!--		<repository>-->
+<!--			<id>jeecg</id>-->
+<!--			<name>jeecg Repository</name>-->
+<!--			<url>http://maven.jeecg.com:8090/nexus/content/repositories/jeecg</url>-->
+<!--		</repository>-->
+<!--		<snapshotRepository>-->
+<!--			<id>jeecg-snapshots</id>-->
+<!--			<name>jeecg Snapshot Repository</name>-->
+<!--			<url>http://maven.jeecg.com:8090/nexus/content/repositories/snapshots/</url>-->
+<!--		</snapshotRepository>-->
+<!--	</distributionManagement>-->
+
 	<distributionManagement>
 		<repository>
-			<id>jeecg</id>
-			<name>jeecg Repository</name>
-			<url>http://maven.jeecg.com:8090/nexus/content/repositories/jeecg</url>
+			<id>xinosoft-releases</id>
+			<name>Xinosoft Repository</name>
+			<url>https://nexus.xinosoft.com/repository/maven-releases/</url>
 		</repository>
 		<snapshotRepository>
-			<id>jeecg-snapshots</id>
-			<name>jeecg Snapshot Repository</name>
-			<url>http://maven.jeecg.com:8090/nexus/content/repositories/snapshots/</url>
+			<id>xinosoft-snapshots</id>
+			<name>Xinosoft Snapshot Repository</name>
+			<url>https://nexus.xinosoft.com/repository/maven-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 	

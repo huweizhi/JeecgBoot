@@ -200,11 +200,17 @@ minidao:
   base-package: org.jeecg.modules.jmreport.*,org.jeecg.modules.drag.*
 jeecg:
   # AI集成
+#  ai-chat:
+#    enabled: true
+#    model: deepseek-chat
+#    apiKey: sk-1cee3cfae0c6472980a658e7828bc1bb
+#    apiHost: https://api.deepseek.com
+#    timeout: 60
   ai-chat:
     enabled: true
-    model: deepseek-chat
-    apiKey: sk-1cee3cfae0c6472980a658e7828bc1bb
-    apiHost: https://api.deepseek.com
+    model: deepseek-r1:32b
+    apiKey: ollama
+    apiHost: http://localhost:11434
     timeout: 60
   # 平台上线安全配置
   firewall:
