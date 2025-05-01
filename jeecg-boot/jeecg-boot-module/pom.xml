@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>jeecg-module-demo</module>
+<!--        <module>jeecg-module-demo</module>-->
         <module>jeecg-boot-module-airag</module>
     </modules>
 

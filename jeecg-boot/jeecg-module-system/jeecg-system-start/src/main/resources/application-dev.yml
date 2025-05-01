@@ -65,7 +65,7 @@ spring:
           jobStore:
             class: org.springframework.scheduling.quartz.LocalDataSourceJobStore
             driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
-            tablePrefix: QRTZ_
+            tablePrefix: qrtz_
             isClustered: true
             misfireThreshold: 12000
             clusterCheckinInterval: 15000
@@ -149,9 +149,9 @@ spring:
           slow-sql-millis: 5000
       datasource:
         master:
-          url: jdbc:mysql://mysql.xinosoft.com:3306/jeecg-boot?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
-          username: xinosoft
-          password: XIno88311598
+          url: jdbc:mysql://localhost:3306/jeecg_boot2?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+          username: root
+          password: 123456
           driver-class-name: com.mysql.cj.jdbc.Driver
           # 多数据源配置
           #multi-datasource1:
@@ -161,8 +161,8 @@ spring:
           #driver-class-name: com.mysql.cj.jdbc.Driver
   #redis 配置
   redis:
-    database: 0
-    host: redis.xinosoft.com
+    database: 1
+    host: localhost
     port: 6379
     password:
 #mybatis plus 设置
@@ -279,7 +279,7 @@ jeecg:
     logRetentionDays: 30
   #分布式锁配置
   redisson:
-    address: mysql.xinosoft.com:6379
+    address: localhost:6379
     password:
     type: STANDALONE
     enabled: true

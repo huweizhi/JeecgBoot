@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinosoft.api.tenant.SysTenantDTO;
+import com.xinosoft.api.tenant.TenantServiceApi;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
@@ -47,7 +49,7 @@ import java.util.stream.Collectors;
  */
 @Service("sysTenantServiceImpl")
 @Slf4j
-public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant> implements ISysTenantService {
+public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant> implements ISysTenantService, TenantServiceApi {
 
     @Autowired
     ISysUserService userService;
@@ -910,4 +912,18 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
         return tenantMapper.getTenantListByUserId(userId);
     }
 
+    @Override
+    public List<SysTenantDTO> queryEffectiveTenant() {
+        LambdaQueryWrapper<SysTenant> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysTenant::getStatus, Integer.valueOf(CommonConstant.STATUS_1));
+        //此处查询忽略时间条件
+        return this.list(queryWrapper).stream().map(
+                tenant -> {
+                    SysTenantDTO sysTenantDTO = new SysTenantDTO();
+                    sysTenantDTO.setId(tenant.getId());
+                    sysTenantDTO.setName(tenant.getName());
+                    return sysTenantDTO;
+                }
+        ).collect(Collectors.toList());
+    }
 }

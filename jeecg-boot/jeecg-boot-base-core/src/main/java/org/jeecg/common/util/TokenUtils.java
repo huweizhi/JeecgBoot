@@ -153,8 +153,30 @@ public class TokenUtils {
      * @return
      */
     public static LoginUser getLoginUser(String username, CommonAPI commonApi, RedisUtil redisUtil) {
+        return getLoginUser(0,username,commonApi,redisUtil);
+    }
+
+    /**
+     * 获取登录用户
+     *
+     * @param commonApi
+     * @param username
+     * @return
+     */
+    public static LoginUser getLoginUser(Integer userType, String username, CommonAPI commonApi, RedisUtil redisUtil) {
+
         LoginUser loginUser = null;
-        String loginUserKey = CacheConstant.SYS_USERS_CACHE + "::" + username;
+
+        if (userType == null) {
+            userType = 0;
+        }
+
+        String loginUserKey = CacheConstant.SYS_USERS_CACHE  + "::" + username+ "::" + userType;
+
+//        if (userType != null && userType > 0) {
+//            loginUserKey = loginUserKey  + "::" + userType;
+//        }
+
         //【重要】此处通过redis原生获取缓存用户，是为了解决微服务下system服务挂了，其他服务互调不通问题---
         if (redisUtil.hasKey(loginUserKey)) {
             try {
@@ -165,8 +187,11 @@ public class TokenUtils {
                 e.printStackTrace();
             }
         } else {
-            // 查询用户信息
-            loginUser = commonApi.getUserByName(username);
+            if (commonApi != null) {
+              loginUser = commonApi.getUserByName(username);
+            } else {
+                return null;
+            }
         }
         return loginUser;
     }

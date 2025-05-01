@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.constant.CommonConstant;
@@ -68,6 +71,15 @@ public class JwtUtil {
         }
     }
 
+	/** 校验token是否正确
+	 * @param token  密钥
+	 * @param secret 用户的密码
+	 * @return 是否正确
+	 */
+	public static boolean verify(String token, String username, String secret) {
+		return verify(token,0, username,secret);
+	}
+
 	/**
 	 * 校验token是否正确
 	 *
@@ -75,20 +87,23 @@ public class JwtUtil {
 	 * @param secret 用户的密码
 	 * @return 是否正确
 	 */
-	public static boolean verify(String token, String username, String secret) {
+	public static boolean verify(String token, Integer userType, String username, String secret) {
 		try {
+			String sessionId = getSessionId(token);
 			// 根据密码生成JWT效验器
 			Algorithm algorithm = Algorithm.HMAC256(secret);
-			JWTVerifier verifier = JWT.require(algorithm).withClaim("username", username).build();
+			JWTVerifier verifier = JWT.require(algorithm)
+					.withClaim("userType",userType)
+					.withClaim("username", username)
+					.withClaim("sessionId",sessionId)
+					.build();
 			// 效验TOKEN
 			DecodedJWT jwt = verifier.verify(token);
 			return true;
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+		} catch (Exception exception) {
 			return false;
 		}
 	}
-
 	/**
 	 * 获得token中的信息无需secret解密也能获得
 	 *
@@ -105,6 +120,20 @@ public class JwtUtil {
 	}
 
 	/**
+	 * 获得token中的信息无需secret解密也能获得
+	 *
+	 * @return token中包含的用户名
+	 */
+	public static String getSessionId(String token) {
+		try {
+			DecodedJWT jwt = JWT.decode(token);
+			return jwt.getClaim("sessionId").asString();
+		} catch (JWTDecodeException e) {
+			return null;
+		}
+	}
+
+	/**
 	 * 生成签名,5min后过期
 	 *
 	 * @param username 用户名
@@ -112,11 +141,45 @@ public class JwtUtil {
 	 * @return 加密的token
 	 */
 	public static String sign(String username, String secret) {
-		Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
-		Algorithm algorithm = Algorithm.HMAC256(secret);
-		// 附带username信息
-		return JWT.create().withClaim("username", username).withExpiresAt(date).sign(algorithm);
+//		Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
+//		Algorithm algorithm = Algorithm.HMAC256(secret);
+//		// 附带username信息
+//		return JWT.create().withClaim("username", username).withExpiresAt(date).sign(algorithm);
+		return sign(0, username, secret);
+	}
 
+	/**
+	 * 生成签名
+	 * @param userType 用户类型
+	 * @param username 用户名
+	 * @param secret   用户的密码
+	 * @return 加密的token
+	 */
+	public static String sign(Integer userType, String username, String secret) {
+		String sessionId = UUID.randomUUID().toString().replaceAll("-","");
+		return sign(userType, username, secret, EXPIRE_TIME,sessionId);
+	}
+
+	/**
+	 * 生成签名
+	 * @param userType 用户类型
+	 * @param username 用户名
+	 * @param secret   用户的密码
+	 * @return 加密的token
+	 */
+	public static String sign(Integer userType, String username, String secret,long expireTime, String sessionId) {
+		Date date = new Date(System.currentTimeMillis() + expireTime);
+		Algorithm algorithm = Algorithm.HMAC256(secret);
+
+		if (userType == null) {
+			userType = 0;
+		}
+		// 附带username信息
+		return JWT.create()
+				.withClaim("userType",userType)
+				.withClaim("username", username)
+				.withClaim("sessionId",sessionId)
+				.withExpiresAt(date).sign(algorithm);
 	}
 
 	/**
@@ -324,6 +387,65 @@ public class JwtUtil {
 		//update-end-author:taoyan date:20210330 for:多租户ID作为系统变量
 		if(returnValue!=null){returnValue = returnValue + moshi;}
 		return returnValue;
+	}
+
+	/**
+	 * 根据request中的token获取用户账号
+	 *
+	 * @param request HttpServletRequest
+	 * @return 登录用户信息
+	 */
+	public static Optional<LoginUser> getLoginUserFromHttpRequest(HttpServletRequest request) {
+
+		Optional<LoginUser> optionalLoginUser = Optional.empty();
+
+		if (request == null) {
+			return optionalLoginUser;
+		}
+
+		String accessToken = request.getHeader("X-Access-Token");
+
+		if (StringUtils.isBlank(accessToken)) {
+			return optionalLoginUser;
+		}
+
+		return getLoginUserByToken(accessToken);
+
+	}
+
+
+	/**
+	 * 根据request中的token获取用户账号
+	 *
+	 * @param accessToken 访问令牌
+	 * @return 登录用户信息
+	 */
+	public static Optional<LoginUser> getLoginUserByToken(String accessToken
+	) {
+
+		Optional<LoginUser> optionalLoginUser = Optional.empty();
+
+		if (StringUtils.isBlank(accessToken)) {
+			return optionalLoginUser;
+		}
+
+		try {
+			DecodedJWT jwt = JWT.decode(accessToken);
+			String username = jwt.getClaim("username").asString();
+			Integer userType = jwt.getClaim("userType").asInt();
+
+			if (oConvertUtils.isNotEmpty(username) && userType != null) {
+				LoginUser loginUser = new LoginUser();
+				loginUser.setUsername(username);
+				loginUser.setUserType(userType);
+				optionalLoginUser = Optional.of(loginUser);
+			}
+		} catch (JWTDecodeException e) {
+			return optionalLoginUser;
+		}
+
+		return optionalLoginUser;
+
 	}
 	
 //	public static void main(String[] args) {

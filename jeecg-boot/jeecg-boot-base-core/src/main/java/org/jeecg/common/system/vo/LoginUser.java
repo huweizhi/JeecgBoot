@@ -138,4 +138,15 @@ public class LoginUser {
 	/**设备id uniapp推送用*/
 	private String clientId;
 
+	/**
+	 * 登录人用户类型
+	 */
+	private Integer userType;
+
+	/**供应商id*/
+	private String supplierId;
+
+	/**客户id*/
+	private String customerId;
+
 }

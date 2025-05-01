@@ -10,6 +10,7 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.constant.CommonConstant;
+import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 import org.springframework.context.annotation.Bean;
@@ -99,4 +100,26 @@ public class Swagger3Config implements WebMvcConfigurer {
                 .components(new Components().addSecuritySchemes(CommonConstant.X_ACCESS_TOKEN,
                         new SecurityScheme().name(CommonConstant.X_ACCESS_TOKEN).type(SecurityScheme.Type.HTTP)));
     }
+
+//    @Bean
+//    public GroupedOpenApi commonApi() {
+//        return GroupedOpenApi.builder()
+//                .group("公共服务") // 分组名称
+//                .packagesToScan("com.xinosoft.modules.common") // 扫描的包
+//                .pathsToMatch("/common/**") // 匹配的路径
+//                .displayName("公共服务接口")
+//                // .addOpenApiCustomiser(openApi -> openApi.info(apiInfo())) // 设置api信息
+//                .build();
+//    }
+
+    @Bean
+    public GroupedOpenApi systemApi() {
+        return GroupedOpenApi.builder()
+                .group("系统服务") // 分组名称
+                .packagesToScan("com.jeecg.modules") // 扫描的包
+                .pathsToMatch("/sys/**") // 匹配的路径
+                .displayName("系统服务接口")
+                .build();
+    }
+
 }

@@ -18,6 +18,11 @@ public class JeecgBootException extends RuntimeException {
 		super(message);
 	}
 
+	public JeecgBootException(int statusCode, String message){
+		super(message);
+		this.errCode = statusCode;
+	}
+
 	public JeecgBootException(String message, int errCode){
 		super(message);
 		this.errCode = errCode;
@@ -36,4 +41,17 @@ public class JeecgBootException extends RuntimeException {
 	{
 		super(message,cause);
 	}
+
+	/**
+	 *
+	 *  因为默认异常会在该方法中递归方式抓取线程堆栈信息，这个过程开销极大。
+	 * 	对于已知的业务异常其实并不需要这些堆栈信息,因此重写了该方法，禁止抓取线程堆栈，以便提供一个轻量级的异常类
+	 * add by huweizhi
+	 * @return
+	 */
+	@Override
+	public synchronized Throwable fillInStackTrace() {
+		return this;
+	}
+
 }

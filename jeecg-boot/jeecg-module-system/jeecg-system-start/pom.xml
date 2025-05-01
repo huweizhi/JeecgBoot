@@ -19,11 +19,12 @@
             <version>${jeecgboot.version}</version>
         </dependency>
         <!-- DEMO 示例模块 -->
-        <dependency>
-            <groupId>org.jeecgframework.boot</groupId>
-            <artifactId>jeecg-module-demo</artifactId>
-            <version>${jeecgboot.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.jeecgframework.boot</groupId>-->
+<!--            <artifactId>jeecg-module-demo</artifactId>-->
+<!--            <version>${jeecgboot.version}</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
         
         <!-- AI大模型管理 -->
         <dependency>

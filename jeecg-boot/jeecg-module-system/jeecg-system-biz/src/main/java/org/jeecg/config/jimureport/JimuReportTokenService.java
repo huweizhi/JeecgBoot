@@ -8,6 +8,7 @@ import org.jeecg.common.util.TokenUtils;
 import org.jeecg.modules.jmreport.api.JmReportTokenServiceI;
 import org.jeecg.modules.system.service.impl.SysBaseApiImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -28,8 +29,12 @@ import java.util.Set;
 @Slf4j
 @Component
 public class JimuReportTokenService implements JmReportTokenServiceI {
+
+    @Lazy
     @Autowired
+    @Qualifier("sysBaseApiImpl")
     private SysBaseApiImpl sysBaseApi;
+
     @Autowired
     @Lazy
     private RedisUtil redisUtil;

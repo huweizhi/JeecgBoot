@@ -15,7 +15,7 @@ import java.util.Date;
  * @author: jeecg-boot
  */
 @Data
-@TableName("sys_tenant")
+@TableName(value = "sys_tenant", schema = "jeecg_boot2")
 public class SysTenant implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -100,6 +100,11 @@ public class SysTenant implements Serializable {
      * 二级域名(暂时无用,预留字段)
      */
     private String secondaryDomain;
+
+    /**
+     * 数据库名称
+     */
+    private String dbName;
 
     /**
      * 登录背景图片(暂时无用，预留字段)
