@@ -52,12 +52,14 @@ public class DictAspect {
 
     private static final String JAVA_UTIL_DATE = "java.util.Date";
 
+    // @Pointcut("execution(public * org.jeecg.modules..*.*Controller.*(..)) || @annotation(org.jeecg.common.aspect.annotation.AutoDict)")
+
     /**
      * 定义切点Pointcut
      */
     @Pointcut("(@within(org.springframework.web.bind.annotation.RestController) || " +
             "@within(org.springframework.stereotype.Controller) || @annotation(org.jeecg.common.aspect.annotation.AutoDict)) " +
-            "&& execution(public org.jeecg.common.api.vo.Result org.jeecg..*.*(..))")
+            "&& (execution(public org.jeecg.common.api.vo.Result org.jeecg..*.*(..)) || execution(public org.jeecg.common.api.vo.Result com.xinosoft..*.*(..)))")
     public void excudeService() {
     }
 
