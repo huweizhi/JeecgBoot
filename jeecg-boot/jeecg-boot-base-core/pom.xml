@@ -314,5 +314,13 @@
 			<groupId>org.jeecgframework.boot</groupId>
 			<artifactId>jeecg-boot-starter-chatgpt</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.redisson</groupId>
+			<artifactId>redisson</artifactId>
+			<version>3.24.3</version>
+			<scope>compile</scope>
+		</dependency>
+
 	</dependencies>
 </project>

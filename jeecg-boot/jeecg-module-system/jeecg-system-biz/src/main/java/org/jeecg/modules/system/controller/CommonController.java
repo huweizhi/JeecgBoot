@@ -61,8 +61,8 @@ public class CommonController {
      * @return
      */
     @PostMapping(value = "/upload")
-    public Result<?> upload(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Result<?> result = new Result<>();
+    public Result<String> upload(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Result<String> result = new Result<>();
         String savePath = "";
         String bizPath = request.getParameter("biz");
 
@@ -112,6 +112,7 @@ public class CommonController {
         }
         if(oConvertUtils.isNotEmpty(savePath)){
             result.setMessage(savePath);
+            result.setResult(savePath);
             result.setSuccess(true);
         }else {
             result.setMessage("上传失败！");
