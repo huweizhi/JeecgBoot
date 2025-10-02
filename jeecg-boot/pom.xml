@@ -30,7 +30,7 @@
 	<properties>
 		<jeecgboot.version>3.8.0</jeecgboot.version>
 		<!-- JDK版本支持17和1.8 -->
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- 微服务 -->
@@ -89,7 +89,6 @@
     </modules>
 
 	<repositories>
-
 <!--		<repository>-->
 <!--            <id>aliyun</id>-->
 <!--            <name>aliyun Repository</name>-->
@@ -118,6 +117,20 @@
 <!--				<enabled>true</enabled>-->
 <!--			</snapshots>-->
 <!--		</repository>-->
+
+		<repository>
+			<id>xinosoft</id>
+			<name>信诺软件私服</name>
+			<url>https://nexus.xinosoft.com/repository/maven-public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+
 	</repositories>
 
 	<dependencies>
